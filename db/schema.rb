@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_19_072358) do
+ActiveRecord::Schema.define(version: 2023_04_22_075128) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -82,6 +82,16 @@ ActiveRecord::Schema.define(version: 2022_01_19_072358) do
     t.index ["user_id"], name: "index_events_on_user_id"
   end
 
+  create_table "follows", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "follow_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["follow_id"], name: "index_follows_on_follow_id"
+    t.index ["user_id", "follow_id"], name: "index_follows_on_user_id_and_follow_id", unique: true
+    t.index ["user_id"], name: "index_follows_on_user_id"
+  end
+
   create_table "notification_timings", force: :cascade do |t|
     t.integer "timing", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -135,6 +145,8 @@ ActiveRecord::Schema.define(version: 2022_01_19_072358) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "profile"
+    t.text "hobby"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
@@ -148,6 +160,8 @@ ActiveRecord::Schema.define(version: 2022_01_19_072358) do
   add_foreign_key "event_attendances", "users"
   add_foreign_key "events", "prefectures"
   add_foreign_key "events", "users"
+  add_foreign_key "follows", "users"
+  add_foreign_key "follows", "users", column: "follow_id"
   add_foreign_key "notifications", "users", column: "receiver_id"
   add_foreign_key "notifications", "users", column: "sender_id"
   add_foreign_key "user_notification_timings", "notification_timings"

@@ -33,6 +33,7 @@ gem 'kaminari', git: 'https://github.com/kaminari/kaminari.git'
 gem 'rails-i18n'
 gem 'ransack'
 gem 'sorcery'
+gem 'jquery-rails'
 
 gem 'factory_bot_rails'
 gem 'faker'
@@ -67,5 +68,12 @@ group :production do
   gem 'pg'
 end
 
+group :test do
+  gem 'capybara', '~> 3.23'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
+end
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'nokogiri', '1.12.5'

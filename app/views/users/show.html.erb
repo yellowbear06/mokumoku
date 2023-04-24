@@ -1,0 +1,33 @@
+<div class="card">
+  <!-- Card header -->
+  <div class="card-header">
+    <h3 class="mb-0">Profile</h3>
+  </div>
+  <!-- Card body -->
+  <div class="card-body">
+      <div class="d-lg-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <%= image_tag @user.decorate.avatar, class: 'avatar-xl rounded-circle' %>
+          <h2><%= @user.name %></h2>
+          <% unless current_user == @user %>
+            <%= render partial: 'follows/follow_form', locals: { user: @user } %>
+          <% end %>
+        </div>
+      </div>
+    <hr class="my-5">
+    <div>
+      <table class="table">
+        <tbody>
+          <tr>
+            <th scope="row"><%= label :profile, "プロフィール" %></th>
+            <td><%= @user.profile %></td>
+          </tr>
+          <tr>
+            <th scope="row"><%= label :hobby, "趣味" %></th>
+            <td><%= @user.hobby %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
