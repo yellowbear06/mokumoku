@@ -85,12 +85,11 @@ class User < ApplicationRecord
     active_relationships.create(follow_id: other_user.id)
   end
 
-  # ユーザーをフォロー解除する
   def unfollow(other_user)
-    active_relationships.find_by(follow_id: other_user.id).destroy
+    relationship = active_relationships.find_by(follow_id: other_user.id)
+    relationship&.destroy
   end
 
-  # 現在のユーザーがフォローしてたらtrueを返す
   def following?(other_user)
     following.include?(other_user)
   end
