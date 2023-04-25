@@ -12,6 +12,10 @@ class User < ApplicationRecord
   has_many :notifications, foreign_key: :receiver_id, dependent: :destroy, inverse_of: :sender
   has_many :user_notification_timings, dependent: :destroy
   has_many :notification_timings, through: :user_notification_timings
+  has_many :active_relationships, class_name: "Follow", foreign_key: "user_id", dependent: :destroy
+  has_many :passive_relationships, class_name: "Follow", foreign_key: "follow_id", dependent: :destroy
+  has_many :following, through: :active_relationships,  source: :follow
+  has_many :followers, through: :passive_relationships, source: :user
   has_one_attached :avatar
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
@@ -75,5 +79,18 @@ class User < ApplicationRecord
 
   def allow_liked_event_notification?
     notification_timings.liked_event.present?
+  end
+
+  def follow(other_user)
+    active_relationships.create(follow_id: other_user.id)
+  end
+
+  def unfollow(other_user)
+    relationship = active_relationships.find_by(follow_id: other_user.id)
+    relationship&.destroy
+  end
+
+  def following?(other_user)
+    following.include?(other_user)
   end
 end
